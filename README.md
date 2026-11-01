@@ -1,106 +1,357 @@
-# Complaint Management Data Pipeline
+# YottaFlexAI – Intelligent Complaint Management System
 
-A reproducible synthetic data pipeline for modeling, processing, validating, and analyzing a customer complaint-management workflow.
+**72-Hour Coding Challenge – Round 2**
 
-The project simulates the complete journey from **customer and order data → complaint creation → business-rule decisions → team assignment → SLA tracking → workflow events → resolution → customer survey**, while deliberately introducing known anomalies to demonstrate automated data-quality validation.
+An end-to-end complaint management solution that generates realistic synthetic business data, classifies complaints, assigns responsible teams, monitors Service Level Agreements (SLAs), tracks resolutions and customer communications, and provides operational analytics and reports.
 
----
+<p align="center">
 
-## 1. Project Objective
+  **Complaint Classification · Intelligent Assignment · SLA Monitoring · Resolution Tracking · Analytics**
 
-The objective is to build a small but realistic complaint-management data pipeline that:
-
-- Generates related synthetic business data.
-- Preserves relationships using primary and foreign keys.
-- Applies deterministic business rules for priority and assignment.
-- Calculates complaint SLAs.
-- Preserves complaint lifecycle history as events.
-- Generates resolutions and post-resolution surveys.
-- Introduces deliberate data-quality and workflow anomalies.
-- Validates structural, relational, business, and lifecycle integrity.
-- Produces measurable analytics.
-- Demonstrates reproducible data generation.
+</p>
 
 ---
 
-## 2. Business Scenario
+## Table of Contents
 
-A customer-support organization receives complaints through multiple channels such as email, phone, chat, and web.
-
-Each complaint may be associated with:
-
-- A customer
-- An order
-- A product
-- A complaint category
-- Severity and sentiment
-- A safety indicator
-- Previous/repeat complaints
-
-The pipeline uses these attributes to determine:
-
-1. Complaint priority
-2. Responsible operational team
-3. Assigned agent
-4. SLA deadline
-5. Workflow lifecycle
-6. Resolution
-7. Customer survey
-
-This creates a traceable representation of the complaint-management process.
+- [Quick Start](#quick-start)
+- [Project Overview](#project-overview)
+- [Business Problem](#business-problem)
+- [Solution Overview](#solution-overview)
+- [System Architecture](#system-architecture)
+- [Technology Stack](#technology-stack)
+- [Synthetic Data Generation](#synthetic-data-generation)
+- [ID and Naming Conventions](#id-and-naming-conventions)
+- [Core Business Rules](#core-business-rules)
+- [Complaint Lifecycle](#complaint-lifecycle)
+- [Database Design and Relationships](#database-design-and-relationships)
+- [Ground Truth and Exception Handling](#ground-truth-and-exception-handling)
+- [Validation and Reproducibility](#validation-and-reproducibility)
+- [Application Screenshots](#application-screenshots)
+- [API Overview](#api-overview)
+- [Project Structure](#project-structure)
+- [Reports and Generated Outputs](#reports-and-generated-outputs)
+- [Limitations and Future Enhancements](#limitations-and-future-enhancements)
+- [License and Data Provenance](#license-and-data-provenance)
 
 ---
 
-## 3. End-to-End Pipeline
+## Quick Start
+
+Follow these steps to run the application locally.
+
+### 1. Prerequisites
+
+Make sure you have installed:
+
+| Requirement | Version |
+|---|---|
+| Python | 3.11 |
+| Node.js | LTS |
+| npm | Included with Node.js |
+| Git | Latest stable version |
+
+### 2. Clone the repository
+
+```bash
+git clone https://github.com/prabath1703/YottaFlexAI_Complaint_Management_System.git
+
+cd YottaFlexAI_Complaint_Management_System
+```
+
+### 3. Set up the Python environment
+
+**Windows – PowerShell**
+
+```powershell
+python -m venv .venv
+
+.venv\Scripts\Activate.ps1
+```
+
+**Linux / macOS**
+
+```bash
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+
+### 4. Install backend dependencies
+
+Run this command from the project root:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Initialize the database
+
+The project uses generated CSV datasets as its source data and SQLite for relational persistence.
+
+Run:
+
+```bash
+python scripts/import_data_to_db.py
+```
+
+This imports the generated datasets into:
 
 ```text
-Configuration
-      ↓
-Master Data
-      ↓
-Customers / Products / Categories
-      ↓
-Orders
-      ↓
-Complaints
-      ↓
-Business Rules
-      ↓
-Priority + Team + Agent + SLA
-      ↓
-Workflow Events
-      ↓
-Messages + Status Events
-      ↓
-Resolution + Survey
-      ↓
-Deliberate Anomalies
-      ↓
-Validation
-      ↓
-Analytics
-      ↓
-CSV + JSON Outputs
+data/complaint_management.db
+```
+
+**Note:** The import script initializes/resets the project database before importing the generated data. Run it when setting up a fresh local environment, not when you want to preserve existing application records.
+
+### 6. Start the backend server
+
+From the project root, run:
+
+```bash
+uvicorn app.main:app --app-dir backend --reload --reload-dir backend --port 8000
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 7. Start the frontend
+
+Open a second terminal:
+
+```powershell
+cd frontend
+```
+
+Install frontend dependencies:
+
+```bash
+npm install
+```
+
+Start the React development server:
+
+```bash
+npm run dev
+```
+
+Open the application:
+
+```text
+http://localhost:5173
+```
+
+### 8. Run project validation
+
+From the project root, with the Python environment activated:
+
+```bash
+pytest -q
+```
+
+Check dependency consistency:
+
+```bash
+python -m pip check
+```
+
+Run the deterministic data-generation reproducibility check:
+
+```bash
+python scripts/check_reproducibility.py
+```
+
+**Important:** The reproducibility script regenerates the synthetic CSV datasets. Back up any generated data you have modified before running it.
+
+---
+
+## Project Overview
+
+YottaFlexAI Complaint Management System is designed to address the operational challenges businesses face when handling customer complaints across different products, orders, channels and departments.
+
+The application provides a centralized workflow for managing complaints from creation through classification, assignment, SLA tracking, communication and resolution.
+
+It combines synthetic data generation, relational data management, business rules, REST APIs and an interactive React interface.
+
+### Key capabilities
+
+- Generate realistic and reproducible synthetic business datasets.
+- Classify complaints based on business categories and severity.
+- Determine complaint priority using business rules.
+- Route complaints to appropriate teams and agents.
+- Calculate SLA deadlines based on priority.
+- Monitor SLA completion and breach conditions.
+- Pause and resume SLA clocks.
+- Preserve assignment and complaint status history.
+- Record customer communication against complaints.
+- Track resolution proposals and approval decisions.
+- Generate operational analytics and downloadable reports.
+- Validate data integrity and reproducibility.
+
+---
+
+## Business Problem
+
+Businesses receive customer complaints through multiple channels, including email, phone, web and other support channels.
+
+Without a centralized complaint management process, organizations may experience:
+
+- Incorrect complaint categorization.
+- Delayed assignment to responsible teams.
+- Missed SLA deadlines.
+- Critical safety complaints receiving insufficient priority.
+- Incomplete communication records.
+- Repeated complaints without proper tracking.
+- Poor visibility into resolution performance.
+- Difficulty identifying operational bottlenecks.
+
+The objective is to develop an end-to-end solution that classifies complaints, assigns owners, enforces SLAs, tracks resolution and customer communication, exposes important decisions and exceptions, preserves traceability, and produces measurable operational outputs.
+
+---
+
+## Solution Overview
+
+The implementation follows a structured data-to-application workflow.
+
+1. **Master data generation** – Customers, products, categories and orders.
+2. **Transactional data generation** – Complaints and dependent records.
+3. **Complaint classification** – Determine category, severity and sentiment.
+4. **Priority determination** – Apply business rules using safety, sentiment, order value and recurrence.
+5. **Automatic assignment** – Route complaints to the appropriate team and agent.
+6. **SLA management** – Calculate deadlines and monitor completion or breach.
+7. **Lifecycle tracking** – Record complaint status transitions as events.
+8. **Customer communication** – Store messages associated with complaints.
+9. **Resolution management** – Record proposed resolutions and approval decisions.
+10. **Analytics and reporting** – Produce operational metrics and downloadable reports.
+11. **Validation and reproducibility** – Verify dataset integrity and deterministic generation.
+
+---
+
+## System Architecture
+
+The system follows a modular architecture with four major layers.
+
+### High-level architecture
+
+```mermaid
+flowchart TD
+    A["Synthetic Data Generator"] --> B["Generated CSV Datasets"]
+    B --> C["Data Validation"]
+    B --> D["CSV to SQLite Import"]
+    D --> E["SQLite Database"]
+    E --> F["FastAPI Backend"]
+    F --> G["Business Rules and Services"]
+    G --> F
+    F --> H["React Frontend"]
+    H --> I["Operations Dashboard"]
+    H --> J["Complaint Management"]
+    H --> K["SLA Monitoring"]
+    H --> L["Analytics and Reports"]
+```
+
+### Application architecture
+
+```mermaid
+flowchart TB
+    subgraph Frontend["Presentation Layer"]
+        UI["React Application"]
+        DASH["Dashboard and Analytics"]
+        COMP["Complaint Management"]
+        REP["Reports"]
+    end
+
+    subgraph Backend["Backend Layer"]
+        API["FastAPI REST APIs"]
+        CS["Complaint Services"]
+        AS["Assignment Services"]
+        SS["SLA Services"]
+        RS["Resolution Services"]
+        MS["Messaging Services"]
+    end
+
+    subgraph Persistence["Persistence Layer"]
+        DB[("SQLite Database")]
+        MODELS["SQLAlchemy Models"]
+    end
+
+    UI --> API
+    API --> CS
+    API --> AS
+    API --> SS
+    API --> RS
+    API --> MS
+
+    CS --> MODELS
+    AS --> MODELS
+    SS --> MODELS
+    RS --> MODELS
+    MS --> MODELS
+
+    MODELS --> DB
+    DASH --> API
+    COMP --> API
+    REP --> API
+```
+
+### Synthetic data workflow
+
+```mermaid
+flowchart TD
+    A["Fixed Seed and Configuration"] --> B["Generate Master Data"]
+    B --> C["Generate Orders"]
+    C --> D["Generate Complaints"]
+    D --> E["Apply Classification and Priority Rules"]
+    E --> F["Generate Assignments and SLA Clocks"]
+    F --> G["Generate Status and Message Events"]
+    G --> H["Generate Resolutions and Surveys"]
+    H --> I["Inject Labelled Edge Cases"]
+    I --> J["Validate Datasets"]
+    J --> K["Export CSV Files"]
+    K --> L["Reproducibility Check"]
 ```
 
 ---
 
-## 4. Architecture
+## Technology Stack
 
-The detailed architecture and data-flow documentation is available here:
-
-- [Architecture & Data Flow](docs/architecture.md)
-- [Data Dictionary](docs/data-dictionary.md)
-
-The architecture follows a **parent-first generation model** so dependent records can reference valid parent identifiers.
+| Layer | Technologies |
+|---|---|
+| Programming language | Python 3.11 |
+| Backend framework | FastAPI |
+| API server | Uvicorn |
+| Database | SQLite |
+| ORM | SQLAlchemy |
+| Data processing | Pandas |
+| Synthetic data generation | Faker |
+| Data validation | Pytest and custom validation scripts |
+| Frontend | React |
+| Frontend build tool | Vite |
+| HTTP communication | Axios |
+| Charts and visualization | Recharts |
+| Icons | Lucide React |
+| Version control | Git and GitHub |
 
 ---
 
-## 5. Dataset Scale
+## Synthetic Data Generation
 
-The default configuration generates:
+The system uses a deterministic synthetic data generator to create related business entities and transaction records.
 
-| Dataset | Records |
+A fixed random seed is used to ensure repeatable dataset generation.
+
+**Generation seed:** `20261022`
+
+### Baseline dataset volume
+
+| Entity | Generated records |
 |---|---:|
 | Customers | 5,000 |
 | Products | 100 |
@@ -111,281 +362,400 @@ The default configuration generates:
 | Status Events | 9,614 |
 | Resolutions | 1,807 |
 | Surveys | 1,807 |
-| Deliberate Anomalies | 6 |
 
-The scale can be changed through:
+The generator produces 11 CSV datasets.
 
-```text
-config/config.json
-```
+### Generated datasets
 
----
+| Dataset | Description |
+|---|---|
+| `customers.csv` | Synthetic customer master records |
+| `products.csv` | Product master records |
+| `categories.csv` | Complaint category definitions |
+| `orders.csv` | Customer order transactions |
+| `complaints.csv` | Complaint records and classification fields |
+| `assignments.csv` | Team and agent assignment records |
+| `sla_clocks.csv` | SLA deadlines and monitoring information |
+| `complaint_messages.csv` | Customer communication records |
+| `status_events.csv` | Complaint lifecycle event history |
+| `resolutions.csv` | Complaint resolution records |
+| `surveys.csv` | Post-resolution survey records |
 
-## 6. Core Entities
+### Data generation principles
 
-```text
-Customer
-   │
-   ├── Order
-   │      └── Product
-   │
-   └── Complaint
-          ├── Assignment
-          ├── SLA Clock
-          ├── Complaint Messages
-          ├── Status Events
-          ├── Resolution
-          └── Survey
-```
-
-### Main entities
-
-- **Customer** — synthetic customer master records.
-- **Product** — product and safety-risk information.
-- **Category** — complaint category reference data.
-- **Order** — customer purchase records.
-- **Complaint** — primary business transaction.
-- **Assignment** — responsible team and agent.
-- **SLA Clock** — priority-based SLA tracking.
-- **Complaint Message** — communication history.
-- **Status Event** — complaint lifecycle history.
-- **Resolution** — final complaint action.
-- **Survey** — post-resolution customer feedback.
-- **Ground Truth** — known deliberate anomalies.
+- Generate parent/master records before dependent records.
+- Use deterministic and consistently formatted identifiers.
+- Reference valid parent IDs wherever relationships are expected.
+- Derive calculated values from source records and business rules.
+- Maintain event history instead of silently overwriting previous states.
+- Keep deliberate anomaly labels separate from normal input datasets.
+- Validate generated datasets before using them in the application.
 
 ---
 
-## 7. Business Rules
+## ID and Naming Conventions
 
-### Priority
+The project uses structured identifiers to maintain consistency across generated CSV files and database relationships.
 
-Priority is derived from complaint characteristics rather than independently randomized.
+| Entity | Pattern | Example |
+|---|---|---|
+| Customer | `CUS-NNNNNN` | `CUS-000001` |
+| Order | `ORD-YYYY-NNNNNN` | `ORD-2026-000001` |
+| Complaint | `CMP-YYYY-NNNNNN` | `CMP-2026-000001` |
+| Message | `MSG-<complaint-id>-NNN` | `MSG-CMP-2026-000001-001` |
+| SLA Clock | `SLA-<complaint-id>` | `SLA-CMP-2026-000001` |
+| Resolution | `RES-<complaint-id>` | `RES-CMP-2026-000001` |
 
-Current decision order:
+Identifiers are designed to be deterministic, zero-padded and consistent across related datasets.
 
-```text
-Safety issue
-    → P1
+---
 
-Critical severity
-    → P1
+## Core Business Rules
 
-High severity
-    → P2
+### 1. Complaint classification
 
-Very negative sentiment
-    → P2
+Complaints are categorized according to their business context.
 
-Repeat complaint + high order value
-    → P2
+The generated dataset contains 10 complaint categories.
 
-Medium severity
-    → P3
+Classification and severity information are stored with complaint records.
 
-Otherwise
-    → P4
-```
+### 2. Priority determination
 
-### Team Assignment
+The system supports four priority levels:
 
-```text
-Safety / PRODUCT_SAFETY → PRODUCT_SAFETY
-
-DELIVERY → LOGISTICS
-
-PAYMENT / BILLING → PAYMENTS
-
-REFUND → REFUNDS
-
-Other categories → CUSTOMER_SUPPORT
-```
-
-### SLA
-
-| Priority | SLA |
+| Priority | SLA target |
 |---|---:|
 | P1 | 4 hours |
 | P2 | 12 hours |
 | P3 | 24 hours |
 | P4 | 72 hours |
 
-The deadline is calculated from the complaint creation time.
+Priority determination considers relevant business conditions, including:
 
----
+- Product safety issues.
+- Complaint sentiment and severity.
+- Order value.
+- Repeat complaint indicators.
 
-## 8. Workflow Lifecycle
+### 3. Team assignment
 
-Complaint history is represented using explicit status events rather than overwriting historical states.
+Complaints are routed to the relevant operational team.
 
-Typical lifecycle:
-
-```text
-CREATED
-   ↓
-ASSIGNED
-   ↓
-IN_PROGRESS
-   ↓
-RESOLVED
-   ↓
-CLOSED
-```
-
-A closed complaint may then receive:
-
-```text
-Resolution
-    ↓
-Customer Survey
-```
-
-This preserves traceability throughout the complaint lifecycle.
-
----
-
-## 9. Deliberate Anomalies
-
-Six known anomalies are intentionally injected into the generated data.
-
-| ID | Deliberate Issue |
+| Team | Responsibility |
 |---|---|
-| ANOM-001 | Complaint without valid customer |
-| ANOM-002 | Resolution before complaint |
-| ANOM-003 | Incorrect SLA pause |
-| ANOM-004 | Repeat issue not linked |
-| ANOM-005 | Safety complaint assigned to wrong queue |
-| ANOM-006 | Survey before closure |
+| CUSTOMER_SUPPORT | General customer support |
+| LOGISTICS | Delivery and logistics issues |
+| PAYMENTS | Payment-related issues |
+| REFUNDS | Refund-related issues |
+| PRODUCT_SAFETY | Product safety concerns |
 
-Expected anomaly information is stored separately:
+Assignment records capture the responsible team and agent.
+
+### 4. SLA monitoring
+
+The SLA service calculates the deadline using the complaint priority.
+
+The system supports:
+
+- SLA deadline calculation.
+- Elapsed-time tracking.
+- SLA pause and resume.
+- Paused-duration tracking.
+- Completion tracking.
+- Breach detection.
+- SLA status reporting.
+
+### 5. Complaint lifecycle
+
+Complaint status changes are stored as explicit status event records.
+
+This preserves the history of how a complaint progresses instead of retaining only its latest status.
+
+### 6. Resolution and approval
+
+Resolution records are associated with complaints.
+
+The application supports:
+
+- Recording proposed resolutions.
+- Submitting resolutions for approval.
+- Approving resolutions.
+- Rejecting resolutions.
+- Updating the complaint lifecycle and SLA state when a resolution is finalized.
+
+### 7. Customer communication
+
+Complaint messages are stored as records associated with their respective complaints.
+
+This provides a communication history for operational traceability. External email and SMS delivery integrations are not part of the current implementation.
+
+---
+
+## Complaint Lifecycle
+
+The workflow connects complaint creation, ownership, SLA monitoring, communication and resolution.
+
+```mermaid
+flowchart TD
+    A["Complaint Created"] --> B["Classify Complaint"]
+    B --> C["Determine Priority"]
+    C --> D["Assign Team and Agent"]
+    D --> E["Create SLA Clock"]
+    E --> F["In Progress"]
+    F --> G["Record Customer Communication"]
+    G --> H{"Resolution Proposed?"}
+    H -->|No| F
+    H -->|Yes| I["Submit for Approval"]
+    I --> J{"Approved?"}
+    J -->|No| F
+    J -->|Yes| K["Finalize Resolution"]
+    K --> L["Complete SLA Evaluation"]
+    L --> M["Close Complaint"]
+    M --> N["Post-Resolution Survey"]
+```
+
+The exact status transitions are recorded in the status event history.
+
+---
+
+## Database Design and Relationships
+
+The database is implemented using SQLite and SQLAlchemy ORM models.
+
+### Core entities
+
+| Entity | Purpose |
+|---|---|
+| Customer | Stores synthetic customer information |
+| Product | Stores product master information |
+| Order | Stores customer order information |
+| Category | Stores complaint categories |
+| Complaint | Central complaint record |
+| ComplaintMessage | Stores communication history |
+| Assignment | Stores team and agent ownership |
+| SLAClock | Stores SLA deadlines and elapsed-time information |
+| StatusEvent | Stores complaint lifecycle transitions |
+| Resolution | Stores resolution and approval information |
+| Survey | Stores post-resolution feedback |
+
+### Relationship overview
+
+```mermaid
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER ||--o{ COMPLAINT : raises
+    PRODUCT ||--o{ ORDER : belongs_to
+    ORDER o|--o{ COMPLAINT : references
+    CATEGORY ||--o{ COMPLAINT : categorizes
+    COMPLAINT ||--o{ COMPLAINT_MESSAGE : has
+    COMPLAINT ||--o{ ASSIGNMENT : assigned_through
+    COMPLAINT ||--o| SLA_CLOCK : monitored_by
+    COMPLAINT ||--o{ STATUS_EVENT : records
+    COMPLAINT ||--o| RESOLUTION : resolved_by
+    COMPLAINT ||--o| SURVEY : receives
+```
+
+Relationships can be optional where the business workflow allows it, such as a complaint without a valid customer or an order reference.
+
+Foreign keys and database constraints help maintain relational integrity. Source references that cannot be resolved are handled without silently fabricating unrelated parent records.
+
+---
+
+## Ground Truth and Exception Handling
+
+The project includes a separate ground-truth dataset for deliberate anomaly cases.
+
+Location:
 
 ```text
 data/ground_truth/ground_truth.csv
 ```
 
-This allows the validation system to demonstrate that known exceptions can be detected without mixing ground-truth labels into normal business data.
+The dataset contains six deliberate anomaly cases.
+
+The ground truth is kept separate from normal generated input datasets and must not be exposed through public application APIs or frontend features.
+
+### Exception scenarios
+
+| Scenario | Purpose |
+|---|---|
+| Complaint without customer | Tests optional customer relationships |
+| Resolution before complaint | Tests lifecycle and date-ordering validation |
+| Incorrect SLA clock pause | Tests SLA consistency |
+| Repeat issue not linked | Tests recurrence and relationship validation |
+| Critical safety issue assigned to low-priority queue | Tests priority and assignment rules |
+| Survey before complaint closure | Tests lifecycle dependency validation |
+
+These scenarios help demonstrate how the system handles exceptional business conditions rather than only ideal records.
 
 ---
 
-## 10. Data Validation
+## Validation and Reproducibility
 
-The validation layer checks:
+Data quality and deterministic generation are important acceptance criteria.
 
-### Structural integrity
+### Validation areas
 
-- Primary-key uniqueness
-- Required fields
-- Valid enumerated values
+The validation process considers:
 
-### Referential integrity
+- Primary-key uniqueness.
+- Foreign-key integrity.
+- Valid relationships and joins.
+- Allowed values and enumerations.
+- Date ordering.
+- Duplicate detection.
+- Lifecycle consistency.
+- Derived-value reconciliation.
+- Exception coverage.
+- Separation of ground-truth labels.
 
-- Customer references
-- Product references
-- Order references
-- Complaint references
+### Reproducibility verification
 
-### Business integrity
+The project includes:
 
-- Priority values
-- SLA/priority consistency
-- Assignment consistency
-- Lifecycle rules
-
-### Temporal integrity
-
-- Complaint and resolution ordering
-- Survey timing
-- Status-event chronology
-- SLA timing
-
-### Ground-truth validation
-
-The validator confirms that all six deliberate anomaly types are detected.
-
----
-
-## 11. Analytics
-
-The analytics layer produces:
-
-- Complaint volume by category
-- Complaint volume by priority
-- Complaint volume by channel
-- Complaint status distribution
-- Assignment distribution by team
-- SLA compliance
-- Resolution type distribution
-- Survey rating distribution
-- Ground-truth anomaly counts
-
-Output:
-
-```text
-data/output/metrics_summary.json
+```bash
+python scripts/check_reproducibility.py
 ```
 
----
+The script regenerates the datasets twice using the fixed seed and compares row counts and SHA-256 checksums.
 
-## 12. Reproducibility
+### Verified reproducibility results
 
-The pipeline uses a fixed random seed:
+| Check | Result |
+|---|---|
+| Random seed | `20261022` |
+| Generation runs | 2 |
+| Generated CSV files | 11 |
+| Matching checksums | 11/11 |
+| Record counts | Matched |
+| Reproducibility check | PASSED |
+
+<details>
+<summary><strong>Validation output summary</strong></summary>
 
 ```text
-20261022
-```
+Run 1 and Run 2 generated identical datasets.
 
-The reproducibility script generates the dataset twice and compares SHA-256 checksums.
+Customers:       5000
+Products:         100
+Categories:        10
+Orders:          8000
+Complaints:      2000
+Messages:        6000
+Events:          9614
+Resolutions:     1807
+Surveys:         1807
 
-Result:
+All 11 CSV checksums matched.
 
-```text
 REPRODUCIBILITY CHECK PASSED
-Same seed produced identical datasets.
 ```
 
-All generated datasets matched between the two runs.
+</details>
+
+These results demonstrate deterministic synthetic CSV generation under the tested environment. They do not imply that the entire running application or its changing SQLite database is automatically reproducible.
 
 ---
 
-## 13. Automated Testing
+## Application Screenshots
 
-The project includes a pytest test suite covering core data and workflow integrity.
+The following screenshots should demonstrate the actual running application.
 
-Current result:
+**Add your captured screenshots to `docs/screenshots/` using these filenames.**
+
+### 1. Dashboard and operational overview
+
+Shows complaint KPIs, status distribution and operational analytics.
+
+![Complaint Management Dashboard](docs/screenshots/dashboard.png)
+
+### 2. Complaint management
+
+Shows complaint records, classification, priority and current status.
+
+![Complaint Management](docs/screenshots/complaints.png)
+
+### 3. Complaint details and history
+
+Shows complaint information, assignment, messages and lifecycle history.
+
+![Complaint Details](docs/screenshots/complaint-details.png)
+
+### 4. SLA monitoring
+
+Shows SLA deadlines, completion states and breach information.
+
+![SLA Monitoring](docs/screenshots/sla-monitoring.png)
+
+### 5. Resolution management
+
+Shows resolution proposal and approval workflow.
+
+![Resolution Management](docs/screenshots/resolutions.png)
+
+### 6. Reports and dataset downloads
+
+Shows available reports and generated dataset downloads.
+
+![Reports and Downloads](docs/screenshots/reports.png)
+
+> Screenshot paths are placeholders until the corresponding screenshots are captured and added to the repository. Only include screenshots of features that are actually available in the running application.
+
+---
+
+## API Overview
+
+The backend exposes REST APIs through FastAPI.
+
+| API area | Functionality |
+|---|---|
+| Complaints | List, create, retrieve, update status and view history |
+| Customers | Retrieve customer records |
+| Products | Retrieve product records |
+| Categories | Retrieve complaint categories |
+| Assignments | Retrieve and create ownership assignments |
+| SLA | Retrieve SLA records and manage pause, resume and completion |
+| Messages | Retrieve and create communication records |
+| Resolutions | Retrieve, propose, approve and reject resolutions |
+| Analytics | Retrieve operational summary metrics |
+| Reports | Download complaint reports, SLA reports and team performance data |
+| Datasets | Retrieve generated dataset metadata and download CSV files |
+
+Interactive API documentation is available at:
 
 ```text
-10 passed
-```
-
-Tests cover:
-
-- Unique customer IDs
-- Unique order IDs
-- Unique complaint IDs
-- Order/customer foreign-key integrity
-- Complaint/order foreign-key integrity
-- Valid priority values
-- SLA/priority consistency
-- Resolution lifecycle
-- Survey lifecycle
-- Ground-truth anomaly coverage
-
-Run:
-
-```powershell
-pytest -v
+http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## 14. Project Structure
+## Project Structure
+
+The repository is organized into separate backend, frontend, data-generation, configuration, documentation and testing areas.
 
 ```text
-Complaint-Management-Data-Pipeline/
+YottaFlexAI_Complaint_Management_System/
 │
-├── app/
+├── backend/
+│   └── app/
+│       ├── api/
+│       ├── db/
+│       ├── models/
+│       ├── schemas/
+│       ├── services/
+│       └── main.py
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── services/
+│   │   └── App.jsx
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── config/
-│   └── config.json
 │
 ├── data/
 │   ├── output/
@@ -399,174 +769,110 @@ Complaint-Management-Data-Pipeline/
 │   │   ├── complaint_messages.csv
 │   │   ├── status_events.csv
 │   │   ├── resolutions.csv
-│   │   ├── surveys.csv
-│   │   └── metrics_summary.json
+│   │   └── surveys.csv
 │   │
 │   └── ground_truth/
 │       └── ground_truth.csv
 │
 ├── docs/
-│   ├── architecture.md
-│   └── data-dictionary.md
 │
 ├── scripts/
-│   └── check_reproducibility.py
+│   ├── import_data_to_db.py
+│   ├── check_reproducibility.py
+│   ├── repair_sla_history.py
+│   └── inspect_sla.py
 │
 ├── src/
-│   ├── analytics/
-│   │   └── metrics.py
-│   │
-│   ├── generator/
-│   │   ├── master_data.py
-│   │   ├── transaction_data.py
-│   │   ├── business_rules.py
-│   │   ├── apply_rules.py
-│   │   ├── workflow_data.py
-│   │   ├── edge_cases.py
-│   │   └── generate.py
-│   │
-│   └── validation/
-│       └── validator.py
 │
 ├── tests/
-│   └── test_pipeline.py
 │
+├── .gitignore
+├── .vscode/
 ├── requirements.txt
 └── README.md
 ```
 
----
-
-## 15. How to Run
-
-### 1. Install dependencies
-
-```powershell
-pip install -r requirements.txt
-```
-
-### 2. Generate the dataset
-
-```powershell
-python -m src.generator.generate
-```
-
-### 3. Run validation
-
-```powershell
-python -m src.validation.validator
-```
-
-### 4. Generate analytics
-
-```powershell
-python -m src.analytics.metrics
-```
-
-### 5. Run automated tests
-
-```powershell
-pytest -v
-```
-
-### 6. Check reproducibility
-
-```powershell
-python scripts\check_reproducibility.py
-```
+The tree above is a high-level guide. Some local artifacts, including the SQLite database and ground-truth data, are intentionally excluded from public version control.
 
 ---
 
-## 16. Key Design Decisions
+## Reports and Generated Outputs
 
-### Parent-first generation
+The application provides reporting functionality to support operational review.
 
-Master records are generated before dependent records to maintain valid relationships.
+### Available reports
 
-### Derived business decisions
+- Complaint report in CSV format.
+- SLA breach report in CSV format.
+- Team performance report.
+- Generated dataset metadata.
+- Downloadable synthetic CSV datasets.
 
-Priority, team assignment, and SLA values are calculated from source attributes and documented rules.
+### Operational metrics
 
-### Event-based history
+The analytics layer provides visibility into:
 
-Status changes and communication are stored as records so workflow history is preserved.
+- Total complaints.
+- Complaint status distribution.
+- Priority distribution.
+- Category distribution.
+- Resolution performance.
+- SLA completion and breach information.
+- Team assignment and workload.
 
-### Separate ground truth
-
-Known anomalies are maintained separately from normal generated data.
-
-### Deterministic generation
-
-A fixed seed enables repeatable datasets and reproducible testing.
-
-### Automated validation
-
-The pipeline validates relationships, business rules, temporal consistency, and deliberate exceptions.
+These metrics help operations analysts and process owners understand complaint volume, ownership and resolution performance.
 
 ---
 
-## 17. Validation Evidence
+## Limitations and Future Enhancements
 
-The current implementation has successfully demonstrated:
+The current implementation focuses on the core complaint management workflow.
+
+Potential future enhancements include:
+
+1. Role-based authentication for business requesters, process owners, approvers, operations analysts and system administrators.
+2. Real email and SMS integrations for customer notifications.
+3. Automated SLA escalation notifications.
+4. More advanced complaint classification using trained machine learning models.
+5. Advanced operational dashboards and configurable reporting.
+6. Deployment using Docker and cloud infrastructure.
+7. Automated scheduled monitoring and background SLA processing.
+8. Audit and access-control enhancements.
+
+These are potential extensions, not claims about the current implementation.
+
+---
+
+## License and Data Provenance
+
+This project is released under the **MIT License**. See the [LICENSE](LICENSE) file.
+
+The generated business records are synthetic and intended for development, testing and demonstration.
+
+No real customer personal information or confidential business records are intended to be used.
+
+The synthetic dataset uses a fixed random seed:
 
 ```text
-Dataset generation          ✓
-Business rules              ✓
-Workflow generation         ✓
-6 deliberate anomalies      ✓
-Validation                  ✓
-Analytics                   ✓
-Automated tests             ✓ 10 passed
-Reproducibility              ✓ PASSED
+20261022
 ```
 
----
-
-## 18. Project Status
-
-**Core data pipeline: Complete**
-
-The current implementation provides a reproducible synthetic complaint-management workflow with:
-
-- Related business entities
-- Business-rule processing
-- SLA calculations
-- Workflow event history
-- Resolution and survey lifecycle
-- Deliberate edge cases
-- Automated validation
-- Analytics
-- Automated tests
-- Reproducibility verification
+The generator and reproducibility scripts provide a repeatable way to create and validate the synthetic data.
 
 ---
 
-## 19. Documentation
+## Challenge Submission
 
-| Document | Purpose |
-|---|---|
-| [Architecture](docs/architecture.md) | Pipeline architecture and data flow |
-| [Data Dictionary](docs/data-dictionary.md) | Entity and field definitions |
-| `config/config.json` | Pipeline configuration and scale |
-| `data/ground_truth/ground_truth.csv` | Deliberate anomaly definitions |
+**Project:** YottaFlexAI – Intelligent Complaint Management System  
+**Challenge:** 72-Hour Code Challenge – Round 2  
+**Repository:** [YottaFlexAI Complaint Management System](https://github.com/prabath1703/YottaFlexAI_Complaint_Management_System)
 
----
-
-## 20. Technology Stack
-
-- **Python 3**
-- **Pandas** — data processing
-- **Faker** — synthetic data generation
-- **Pytest** — automated testing
-- **JSON** — configuration and analytics summary
-- **CSV** — generated datasets
+**Author:** Damarla Sai Prabath
 
 ---
 
-## 21. Summary
+<p align="center">
 
-This project demonstrates an end-to-end synthetic data pipeline for a complaint-management business process.
+  **Built to improve complaint visibility, operational accountability and resolution tracking.**
 
-It combines relational data generation, deterministic business rules, workflow modeling, SLA tracking, anomaly injection, automated validation, analytics, testing, and reproducibility into one traceable pipeline.
-
-The design emphasizes **data quality, referential integrity, business-rule transparency, lifecycle traceability, and repeatable execution**.
+</p>
