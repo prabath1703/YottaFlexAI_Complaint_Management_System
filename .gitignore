@@ -1,0 +1,77 @@
+
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==============================
+# Environment variables / secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# SQLite databases and backups
+# ==============================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+*.bak
+
+# ==============================
+# Ground truth / private evaluation data
+# ==============================
+data/ground_truth/
+
+# ==============================
+# Python testing and linting
+# ==============================
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ==============================
+# Logs
+# ==============================
+*.log
+logs/
+
+# ==============================
+# Frontend dependencies and builds
+# ==============================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# ==============================
+# IDE / operating system
+# ==============================
+.vscode/*
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

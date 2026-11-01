@@ -1,0 +1,36 @@
+
+# ==============================
+# Backend API
+# ==============================
+fastapi
+uvicorn[standard]
+
+# ==============================
+# Database and data validation
+# ==============================
+SQLAlchemy
+pydantic
+pydantic-settings
+
+# ==============================
+# Data generation and processing
+# ==============================
+pandas
+Faker
+python-dotenv
+
+# ==============================
+# Background scheduling
+# ==============================
+APScheduler
+
+# ==============================
+# File uploads and HTTP
+# ==============================
+python-multipart
+httpx
+
+# ==============================
+# Testing
+# ==============================
+pytest
