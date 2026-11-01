@@ -1,3 +1,4 @@
+
 import shutil
 from pathlib import Path
 from datetime import datetime
@@ -8,16 +9,19 @@ from app.models import Complaint, SLAClock, StatusEvent
 
 
 DB_FILE = Path("data/complaint_management.db")
-BACKUP_FILE = Path("data/complaint_management_before_sla_repair.db")
 
 
 def main():
     if not DB_FILE.exists():
         raise FileNotFoundError(f"Database not found: {DB_FILE}")
 
-    # Preserve the original database before changing anything.
-    shutil.copy2(DB_FILE, BACKUP_FILE)
-    print(f"Backup created: {BACKUP_FILE}")
+    # Create a unique backup without overwriting earlier backups.
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_file = DB_FILE.with_name(
+        f"complaint_management_before_sla_repair_{timestamp}.db"
+    )
+    shutil.copy2(DB_FILE, backup_file)
+    print(f"Backup created: {backup_file}")
 
     db = SessionLocal()
 
@@ -29,18 +33,23 @@ def main():
         clocks = db.query(SLAClock).all()
 
         for clock in clocks:
-            complaint = db.query(Complaint).filter(
-                Complaint.complaint_id == clock.complaint_id
-            ).first()
+            complaint = (
+                db.query(Complaint)
+                .filter(
+                    Complaint.complaint_id == clock.complaint_id
+                )
+                .first()
+            )
 
             if not complaint:
                 skipped += 1
                 continue
 
+            # Only repair complaints that are already resolved or closed.
             if complaint.status not in ("RESOLVED", "CLOSED"):
                 continue
 
-            # Use the actual lifecycle event, not today's date.
+            # Find the first historical resolution event.
             resolution_event = (
                 db.query(StatusEvent)
                 .filter(
@@ -51,7 +60,7 @@ def main():
                 .first()
             )
 
-            # If no RESOLVED event exists, use the CLOSED event.
+            # Fall back to CLOSED if no RESOLVED event exists.
             if not resolution_event:
                 resolution_event = (
                     db.query(StatusEvent)
@@ -69,10 +78,16 @@ def main():
 
             resolution_time = resolution_event.event_time
 
-            if not resolution_time or resolution_time < clock.start_time:
+            if (
+                not resolution_time
+                or not clock.start_time
+                or not clock.sla_deadline
+                or resolution_time < clock.start_time
+            ):
                 skipped += 1
                 continue
 
+            # Calculate actual elapsed time, excluding paused duration.
             elapsed = max(
                 0,
                 int(
@@ -94,30 +109,31 @@ def main():
             )
 
             if resolution_time <= clock.sla_deadline:
-                # Complaint met its SLA.
+                # Resolved within the SLA deadline.
                 clock.sla_status = "COMPLETED"
                 clock.breached_at = None
                 completed += 1
 
-                # Remove false breach events generated after resolution.
+                # A complaint completed within SLA must not retain
+                # an SLA breach event.
                 for event in breach_events:
-                    if event.event_time > resolution_time:
-                        db.delete(event)
+                    db.delete(event)
 
             else:
-                # Complaint genuinely exceeded its SLA.
+                # Resolved after the SLA deadline.
                 clock.sla_status = "BREACHED"
-                clock.breached_at = resolution_time
-                breached += 1
 
+                # Preserve the original breach event timestamp.
+                # If no event exists, use the SLA deadline.
                 if breach_events:
-                    # Correct the timestamp of the existing breach event.
-                    breach_events[0].event_time = resolution_time
+                    clock.breached_at = breach_events[0].event_time
 
                     # Remove duplicate breach events.
                     for event in breach_events[1:]:
                         db.delete(event)
                 else:
+                    clock.breached_at = clock.sla_deadline
+
                     db.add(
                         StatusEvent(
                             event_id=f"EVT-{uuid4().hex[:16].upper()}",
@@ -125,10 +141,12 @@ def main():
                             event_type="SLA_BREACHED",
                             from_status=None,
                             to_status=None,
-                            event_time=resolution_time,
+                            event_time=clock.sla_deadline,
                             performed_by="SYSTEM",
                         )
                     )
+
+                breached += 1
 
         db.commit()
 
@@ -137,6 +155,7 @@ def main():
         print("Completed within SLA:", completed)
         print("Genuinely breached:", breached)
         print("Skipped:", skipped)
+        print("Backup:", backup_file)
 
     except Exception:
         db.rollback()

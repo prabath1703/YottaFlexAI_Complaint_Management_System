@@ -676,23 +676,36 @@ Shows complaint records, classification, priority and current status.
 
 ![Complaint Management](docs/screenshots/complaints.png)
 
-### 3. Complaint details and history
+### 3A. Main complaint information and customer details
 
-Shows complaint information, assignment, messages and lifecycle history.
+Shows complaint information.
 
 ![Complaint Details](docs/screenshots/complaint-details.png)
 
-### 4. SLA monitoring
+### 3B. Assignment, messages and communication history
+
+Shows assignment, messages.
+
+![Complaint Details](docs/screenshots/complaint-details-2.png)
+
+### 3C. Status/lifecycle history and other available details
+
+Shows lifecycle history and other details.
+
+![Complaint Details](docs/screenshots/complaint-details-3.png)
+
+### 4. Priority Management
+
+Shows Priority based complaints
+
+![SLA Monitoring](docs/screenshots/priority-complaints.png)
+
+### 5. SLA monitoring
 
 Shows SLA deadlines, completion states and breach information.
 
 ![SLA Monitoring](docs/screenshots/sla-monitoring.png)
 
-### 5. Resolution management
-
-Shows resolution proposal and approval workflow.
-
-![Resolution Management](docs/screenshots/resolutions.png)
 
 ### 6. Reports and dataset downloads
 
