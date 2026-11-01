@@ -1,0 +1,244 @@
+{
+    "summary": {
+        "total_checks": 39,
+        "passed_checks": 35,
+        "failed_checks": 4,
+        "total_errors": 4
+    },
+    "checks": [
+        {
+            "check": "PK: customers.customer_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=5000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: products.product_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=100, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: categories.category_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=10, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: orders.order_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=8000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=2000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: assignments.assignment_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=2000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: sla_clocks.sla_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=2000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: messages.message_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=6000, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: status_events.event_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=9614, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: resolutions.resolution_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=1807, duplicates=0, nulls=0"
+        },
+        {
+            "check": "PK: surveys.survey_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Rows=1807, duplicates=0, nulls=0"
+        },
+        {
+            "check": "FK: orders.customer_id -> customers.customer_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: orders.product_id -> products.product_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: complaints.order_id -> orders.order_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: complaints.product_id -> products.product_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: complaints.category_id -> categories.category_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: assignments.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: sla_clocks.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: messages.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: status_events.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: resolutions.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "FK: surveys.complaint_id -> complaints.complaint_id",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid references=0"
+        },
+        {
+            "check": "Required fields: customers",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "Required fields: products",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "Required fields: orders",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "Required fields: complaints",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "Required fields: assignments",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "Required fields: sla_clocks",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "All required fields populated"
+        },
+        {
+            "check": "ENUM: complaints.priority",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid values=0"
+        },
+        {
+            "check": "ENUM: complaints.severity",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid values=0"
+        },
+        {
+            "check": "ENUM: complaints.channel",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid values=0"
+        },
+        {
+            "check": "ENUM: assignments.team",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Invalid values=0"
+        },
+        {
+            "check": "Order total reconciliation",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Mismatched totals=0"
+        },
+        {
+            "check": "Resolution after complaint",
+            "status": "FAIL",
+            "errors_found": 1,
+            "details": "Invalid resolution timestamps=1"
+        },
+        {
+            "check": "Survey after complaint closure",
+            "status": "FAIL",
+            "errors_found": 1,
+            "details": "Surveys before closure=1"
+        },
+        {
+            "check": "Repeat complaint linkage",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Repeat complaint relationship field present"
+        },
+        {
+            "check": "Safety complaint assignment",
+            "status": "FAIL",
+            "errors_found": 1,
+            "details": "Safety complaints assigned to wrong team=1"
+        },
+        {
+            "check": "SLA pause calculation",
+            "status": "FAIL",
+            "errors_found": 1,
+            "details": "Suspicious SLA pause records=1"
+        },
+        {
+            "check": "Ground-truth anomaly detection",
+            "status": "PASS",
+            "errors_found": 0,
+            "details": "Expected=6, Detected=6"
+        }
+    ]
+}

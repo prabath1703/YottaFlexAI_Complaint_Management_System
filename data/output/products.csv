@@ -1,0 +1,101 @@
+product_id,product_name,product_category,unit_price,safety_risk_level,active_flag
+PRD-000001,Product 0001,Other,43803.16,LOW,True
+PRD-000002,Product 0002,Electronics,10554.42,LOW,True
+PRD-000003,Product 0003,Beauty,47476.61,HIGH,True
+PRD-000004,Product 0004,Books,12151.24,LOW,True
+PRD-000005,Product 0005,Fashion,11702.26,MEDIUM,True
+PRD-000006,Product 0006,Books,48579.49,LOW,True
+PRD-000007,Product 0007,Grocery,37160.46,HIGH,True
+PRD-000008,Product 0008,Sports,22223.67,HIGH,True
+PRD-000009,Product 0009,Grocery,40085.85,LOW,True
+PRD-000010,Product 0010,Furniture,16798.08,MEDIUM,True
+PRD-000011,Product 0011,Grocery,46981.23,MEDIUM,True
+PRD-000012,Product 0012,Sports,7287.31,LOW,True
+PRD-000013,Product 0013,Books,646.05,LOW,True
+PRD-000014,Product 0014,Books,1323.69,LOW,True
+PRD-000015,Product 0015,Grocery,18542.26,LOW,True
+PRD-000016,Product 0016,Electronics,18117.67,MEDIUM,True
+PRD-000017,Product 0017,Grocery,13083.88,MEDIUM,True
+PRD-000018,Product 0018,Books,40036.48,HIGH,True
+PRD-000019,Product 0019,Mobile Accessories,41881.65,LOW,True
+PRD-000020,Product 0020,Beauty,1151.59,LOW,True
+PRD-000021,Product 0021,Other,45974.54,MEDIUM,True
+PRD-000022,Product 0022,Beauty,5306.05,HIGH,True
+PRD-000023,Product 0023,Fashion,30580.3,HIGH,True
+PRD-000024,Product 0024,Fashion,30457.17,MEDIUM,True
+PRD-000025,Product 0025,Sports,13822.96,LOW,True
+PRD-000026,Product 0026,Furniture,14533.53,HIGH,True
+PRD-000027,Product 0027,Home Appliances,39804.88,HIGH,True
+PRD-000028,Product 0028,Electronics,10919.41,MEDIUM,True
+PRD-000029,Product 0029,Furniture,34654.75,HIGH,True
+PRD-000030,Product 0030,Sports,15659.89,MEDIUM,True
+PRD-000031,Product 0031,Furniture,16217.21,MEDIUM,True
+PRD-000032,Product 0032,Grocery,7255.9,HIGH,True
+PRD-000033,Product 0033,Beauty,17064.29,MEDIUM,True
+PRD-000034,Product 0034,Sports,7169.38,HIGH,True
+PRD-000035,Product 0035,Other,45185.08,LOW,True
+PRD-000036,Product 0036,Beauty,4047.31,HIGH,True
+PRD-000037,Product 0037,Grocery,24793.52,LOW,True
+PRD-000038,Product 0038,Sports,705.23,MEDIUM,True
+PRD-000039,Product 0039,Electronics,9763.89,HIGH,True
+PRD-000040,Product 0040,Fashion,24388.44,LOW,True
+PRD-000041,Product 0041,Fashion,48343.84,HIGH,True
+PRD-000042,Product 0042,Books,6639.71,HIGH,True
+PRD-000043,Product 0043,Furniture,10798.56,HIGH,True
+PRD-000044,Product 0044,Grocery,10900.1,MEDIUM,True
+PRD-000045,Product 0045,Grocery,17031.14,HIGH,True
+PRD-000046,Product 0046,Electronics,23167.18,MEDIUM,True
+PRD-000047,Product 0047,Furniture,2999.52,MEDIUM,True
+PRD-000048,Product 0048,Furniture,10045.23,MEDIUM,True
+PRD-000049,Product 0049,Other,18750.59,LOW,True
+PRD-000050,Product 0050,Beauty,32096.88,LOW,True
+PRD-000051,Product 0051,Furniture,34921.84,HIGH,True
+PRD-000052,Product 0052,Furniture,27459.11,HIGH,True
+PRD-000053,Product 0053,Grocery,34917.1,HIGH,True
+PRD-000054,Product 0054,Grocery,8434.41,MEDIUM,True
+PRD-000055,Product 0055,Electronics,10570.69,LOW,True
+PRD-000056,Product 0056,Fashion,37170.85,HIGH,True
+PRD-000057,Product 0057,Fashion,47209.29,MEDIUM,True
+PRD-000058,Product 0058,Electronics,31269.98,HIGH,True
+PRD-000059,Product 0059,Fashion,42912.8,MEDIUM,True
+PRD-000060,Product 0060,Sports,38975.85,MEDIUM,True
+PRD-000061,Product 0061,Other,30575.59,MEDIUM,True
+PRD-000062,Product 0062,Home Appliances,42717.08,LOW,True
+PRD-000063,Product 0063,Home Appliances,30457.33,LOW,True
+PRD-000064,Product 0064,Beauty,34069.18,HIGH,True
+PRD-000065,Product 0065,Fashion,14886.82,LOW,True
+PRD-000066,Product 0066,Home Appliances,5162.07,LOW,True
+PRD-000067,Product 0067,Furniture,18603.36,HIGH,True
+PRD-000068,Product 0068,Fashion,43639.91,LOW,True
+PRD-000069,Product 0069,Furniture,3959.37,MEDIUM,True
+PRD-000070,Product 0070,Grocery,964.17,MEDIUM,True
+PRD-000071,Product 0071,Electronics,19797.78,MEDIUM,True
+PRD-000072,Product 0072,Beauty,41116.19,HIGH,True
+PRD-000073,Product 0073,Home Appliances,12940.79,LOW,True
+PRD-000074,Product 0074,Fashion,18112.63,MEDIUM,True
+PRD-000075,Product 0075,Books,5387.51,LOW,True
+PRD-000076,Product 0076,Mobile Accessories,47066.92,LOW,True
+PRD-000077,Product 0077,Sports,26047.23,HIGH,True
+PRD-000078,Product 0078,Grocery,8128.52,LOW,True
+PRD-000079,Product 0079,Mobile Accessories,19829.81,HIGH,True
+PRD-000080,Product 0080,Beauty,42120.36,LOW,True
+PRD-000081,Product 0081,Mobile Accessories,21196.84,MEDIUM,True
+PRD-000082,Product 0082,Grocery,5710.21,MEDIUM,True
+PRD-000083,Product 0083,Mobile Accessories,20999.78,HIGH,True
+PRD-000084,Product 0084,Mobile Accessories,47576.57,MEDIUM,True
+PRD-000085,Product 0085,Sports,37833.08,LOW,True
+PRD-000086,Product 0086,Books,30071.1,HIGH,True
+PRD-000087,Product 0087,Books,44500.52,HIGH,True
+PRD-000088,Product 0088,Sports,5286.99,MEDIUM,True
+PRD-000089,Product 0089,Electronics,39979.69,MEDIUM,True
+PRD-000090,Product 0090,Fashion,37280.58,HIGH,True
+PRD-000091,Product 0091,Furniture,37047.94,HIGH,True
+PRD-000092,Product 0092,Beauty,6968.59,LOW,True
+PRD-000093,Product 0093,Fashion,1257.48,LOW,True
+PRD-000094,Product 0094,Mobile Accessories,6278.35,MEDIUM,True
+PRD-000095,Product 0095,Other,32785.89,LOW,True
+PRD-000096,Product 0096,Home Appliances,29648.44,LOW,True
+PRD-000097,Product 0097,Electronics,35918.17,LOW,True
+PRD-000098,Product 0098,Grocery,20993.66,MEDIUM,True
+PRD-000099,Product 0099,Fashion,21969.51,HIGH,True
+PRD-000100,Product 0100,Furniture,47536.13,LOW,True

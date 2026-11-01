@@ -1,0 +1,90 @@
+{
+    "complaint_volume": {
+        "total_complaints": 2000,
+        "by_category": {
+            "PRODUCT_SAFETY": 237,
+            "REFUND": 218,
+            "BILLING": 203,
+            "CANCELLATION": 199,
+            "SERVICE": 198,
+            "PAYMENT": 197,
+            "ACCOUNT": 194,
+            "DELIVERY": 192,
+            "PRODUCT_QUALITY": 191,
+            "OTHER": 171
+        },
+        "by_priority": {
+            "P1": 741,
+            "P2": 652,
+            "P4": 306,
+            "P3": 301
+        },
+        "by_channel": {
+            "PHONE": 535,
+            "CHAT": 508,
+            "EMAIL": 482,
+            "WEB": 475
+        }
+    },
+    "complaint_status": {
+        "CLOSED": 1807,
+        "IN_PROGRESS": 193
+    },
+    "assignment": {
+        "total_assignments": 2000,
+        "by_team": {
+            "CUSTOMER_SUPPORT": 917,
+            "PAYMENTS": 383,
+            "PRODUCT_SAFETY": 297,
+            "REFUNDS": 213,
+            "LOGISTICS": 190
+        }
+    },
+    "sla": {
+        "total_sla_clocks": 2000,
+        "by_priority": {
+            "P1": 741,
+            "P2": 652,
+            "P4": 306,
+            "P3": 301
+        },
+        "completed_sla": 1807,
+        "sla_met": 539,
+        "sla_breached": 1268,
+        "sla_compliance_percentage": 29.83
+    },
+    "resolution": {
+        "total_resolutions": 1807,
+        "by_resolution_type": {
+            "NO_ACTION": 333,
+            "CORRECTION": 316,
+            "EXPLANATION": 301,
+            "REPLACEMENT": 293,
+            "CREDIT": 283,
+            "REFUND": 281
+        }
+    },
+    "survey": {
+        "total_surveys": 1807,
+        "response_count": 1292,
+        "average_rating": 3.02,
+        "rating_distribution": {
+            "1.0": 264,
+            "2.0": 252,
+            "3.0": 239,
+            "4.0": 272,
+            "5.0": 265
+        }
+    },
+    "anomalies": {
+        "total_known_anomalies": 6,
+        "by_issue_type": {
+            "COMPLAINT_WITHOUT_CUSTOMER": 1,
+            "RESOLUTION_BEFORE_COMPLAINT": 1,
+            "SLA_PAUSE_ERROR": 1,
+            "REPEAT_ISSUE_NOT_LINKED": 1,
+            "SAFETY_WRONG_QUEUE": 1,
+            "SURVEY_BEFORE_CLOSURE": 1
+        }
+    }
+}

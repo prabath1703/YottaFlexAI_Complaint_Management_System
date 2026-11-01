@@ -1,0 +1,11 @@
+category_id,category_name,description
+CAT-01,DELIVERY,Delivery and shipping issues
+CAT-02,PAYMENT,Payment related complaints
+CAT-03,REFUND,Refund related complaints
+CAT-04,PRODUCT_QUALITY,Product quality complaints
+CAT-05,PRODUCT_SAFETY,Product safety complaints
+CAT-06,CANCELLATION,Order cancellation complaints
+CAT-07,ACCOUNT,Customer account issues
+CAT-08,BILLING,Billing and invoice issues
+CAT-09,SERVICE,Customer service complaints
+CAT-10,OTHER,Other complaints
