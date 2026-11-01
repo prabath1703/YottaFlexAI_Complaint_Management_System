@@ -1,0 +1,53 @@
+{
+    "seed": 20261022,
+
+    "scale": {
+        "customers": 5000,
+        "products": 100,
+        "orders": 8000,
+        "complaints": 2000,
+        "messages": 6000
+    },
+
+    "priority_levels": [
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+    ],
+
+    "channels": [
+        "EMAIL",
+        "PHONE",
+        "CHAT",
+        "WEB"
+    ],
+
+    "categories": [
+        "DELIVERY",
+        "PAYMENT",
+        "REFUND",
+        "PRODUCT_QUALITY",
+        "PRODUCT_SAFETY",
+        "CANCELLATION",
+        "ACCOUNT",
+        "BILLING",
+        "SERVICE",
+        "OTHER"
+    ],
+
+    "teams": [
+        "CUSTOMER_SUPPORT",
+        "LOGISTICS",
+        "PAYMENTS",
+        "REFUNDS",
+        "PRODUCT_SAFETY"
+    ],
+
+    "sla_hours": {
+        "P1": 4,
+        "P2": 12,
+        "P3": 24,
+        "P4": 72
+    }
+}
